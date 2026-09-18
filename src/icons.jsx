@@ -65,6 +65,13 @@ export const ICONS = {
       <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
     </svg>
   ),
+  gamepad: (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="7" width="20" height="11" rx="5.5" />
+      <line x1="7" y1="10.5" x2="7" y2="14.5" /><line x1="5" y1="12.5" x2="9" y2="12.5" />
+      <circle cx="15" cy="11.5" r="1" /><circle cx="18" cy="13.5" r="1" />
+    </svg>
+  ),
 };
 
 export const skillIcons = {
