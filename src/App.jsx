@@ -219,6 +219,7 @@ export default function App() {
           <a href="#projects" className="hidden md:block text-[0.7rem] font-medium tracking-[0.2em] uppercase text-muted hover:text-ink relative after:content-[''] after:absolute after:-bottom-[2px] after:left-0 after:w-full after:h-[1px] after:bg-red after:scale-x-0 after:origin-left hover:after:scale-x-100 after:transition-transform after:duration-[280ms]">Projects</a>
           <a href="#skills" className="hidden md:block text-[0.7rem] font-medium tracking-[0.2em] uppercase text-muted hover:text-ink relative after:content-[''] after:absolute after:-bottom-[2px] after:left-0 after:w-full after:h-[1px] after:bg-red after:scale-x-0 after:origin-left hover:after:scale-x-100 after:transition-transform after:duration-[280ms]">Skills</a>
           <a href="#story" className="hidden md:block text-[0.7rem] font-medium tracking-[0.2em] uppercase text-muted hover:text-ink relative after:content-[''] after:absolute after:-bottom-[2px] after:left-0 after:w-full after:h-[1px] after:bg-red after:scale-x-0 after:origin-left hover:after:scale-x-100 after:transition-transform after:duration-[280ms]">Story</a>
+          <a href={profile.resume} target="_blank" rel="noreferrer" className="hidden md:block text-[0.7rem] font-medium tracking-[0.2em] uppercase text-muted hover:text-ink relative after:content-[''] after:absolute after:-bottom-[2px] after:left-0 after:w-full after:h-[1px] after:bg-red after:scale-x-0 after:origin-left hover:after:scale-x-100 after:transition-transform after:duration-[280ms]">Resume</a>
           <a href="#contact" className="text-[0.68rem] font-bold tracking-[0.18em] uppercase text-white bg-red px-7 py-3 border border-red transition-colors hover:bg-red-dim hover:border-red-dim">Contact</a>
           <button
             type="button"
@@ -241,6 +242,7 @@ export default function App() {
             <a href="#projects" onClick={() => setMobileMenuOpen(false)} className="font-display text-2xl tracking-wide text-ink">Projects</a>
             <a href="#skills" onClick={() => setMobileMenuOpen(false)} className="font-display text-2xl tracking-wide text-ink">Skills</a>
             <a href="#story" onClick={() => setMobileMenuOpen(false)} className="font-display text-2xl tracking-wide text-ink">Story</a>
+            <a href={profile.resume} target="_blank" rel="noreferrer" onClick={() => setMobileMenuOpen(false)} className="font-display text-2xl tracking-wide text-ink">Resume</a>
           </motion.div>
         )}
       </nav>
@@ -268,6 +270,9 @@ export default function App() {
             </a>
             <a href="#contact" className="group inline-flex items-center gap-2 text-[0.72rem] font-bold tracking-[0.18em] uppercase text-muted border-b border-rule pb-0.5 transition-colors hover:text-ink hover:border-red">
               Let's Talk {ICONS.arrow}
+            </a>
+            <a href={profile.resume} target="_blank" rel="noreferrer" className="group inline-flex items-center gap-2 text-[0.72rem] font-bold tracking-[0.18em] uppercase text-muted border-b border-rule pb-0.5 transition-colors hover:text-ink hover:border-red">
+              Resume {ICONS.arrow}
             </a>
             <div className="flex gap-4 sm:ml-4">
               <a href={profile.social.github} className="inline-block text-ink transition-all duration-[280ms] ease-[cubic-bezier(.34,1.56,.64,1)] hover:text-red hover:-translate-y-[3px]" aria-label="GitHub">{ICONS.gh}</a>
@@ -498,6 +503,7 @@ export default function App() {
               />
               <span className="mr-2">{ICONS.mail}</span> Email Me
             </a>
+            <a href={profile.resume} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2.5 px-7 h-[52px] border border-ink bg-transparent text-ink text-[0.72rem] font-bold tracking-[0.18em] uppercase transition-all hover:bg-ink hover:text-white hover:-translate-y-0.5">Resume</a>
             <a href={profile.social.github} className="w-[52px] h-[52px] inline-flex items-center justify-center border border-rule bg-white text-ink text-[1.1rem] transition-all hover:bg-ink hover:text-white hover:-translate-y-0.5" aria-label="GitHub">{ICONS.gh}</a>
             <a href={profile.social.linkedin} className="w-[52px] h-[52px] inline-flex items-center justify-center border border-rule bg-white text-ink text-[1.1rem] transition-all hover:bg-ink hover:text-white hover:-translate-y-0.5" aria-label="LinkedIn">{ICONS.li}</a>
           </motion.div>

@@ -6,6 +6,7 @@ export const profile = {
   stack: 'MERN / Flutter / AI Systems',
   heroImage: '/profile.jpg',
   consoleSite: 'https://khel.aaryanbasnet.com.np',
+  resume: '/Aaryan_Basnet_Resume.pdf',
   social: {
     github: 'https://github.com/AaryanBasnet',
     linkedin: 'https://www.linkedin.com/in/aaryan-basnet-4511a22a4/',
