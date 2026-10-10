@@ -431,7 +431,7 @@ export default function App() {
               A computing graduate who moved between multilingual AI agents, full-stack builds, and interface design depending on the semester.
             </p>
             <p className="mt-5 text-[0.95rem] leading-[1.9] text-muted font-light">
-              Based in Kathmandu, graduated from Softwarica College of IT & E-Commerce under Coventry University.
+              Based in Bhaktapur, graduated from Softwarica College of IT & E-Commerce under Coventry University.
               Thesis: a LangGraph ReAct agent with ChromaDB RAG for bilingual English/Nepali support at Tribhuvan International Airport.
             </p>
           </motion.div>

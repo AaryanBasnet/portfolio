@@ -1,7 +1,7 @@
 export const profile = {
   name: 'Aaryan',
   title: 'Full-Stack Developer',
-  location: 'Kathmandu, Nepal',
+  location: 'Bhaktapur, Nepal',
   email: 'basnetaryan1011@gmail.com',
   stack: 'MERN / Flutter / AI Systems',
   heroImage: '/profile.jpg',
@@ -16,7 +16,7 @@ export const profile = {
     { num: '3+', label: 'Years Building' },
     { num: '2026', label: 'Graduated' },
   ],
-  tagline: "Three years of building things solo, most recently a bilingual chatbot that helps travelers navigate Kathmandu's airport in English or Nepali.",
+  tagline: "Three years of building things solo, most recently a bilingual chatbot that helps travelers navigate Tribhuvan International Airport in English or Nepali.",
 };
 
 export const projects = [
