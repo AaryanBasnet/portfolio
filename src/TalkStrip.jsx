@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useReducedMotion } from 'framer-motion';
 import BlockCharacter from './BlockCharacter';
+import { CONTAINER } from './layout';
 
 const TYPE_MS = 24;   // time per typed character
 const HOLD_MS = 4200; // how long a finished fact stays before the next one
@@ -84,7 +85,7 @@ export default function TalkStrip({ lines }) {
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
     >
-      <div className="mx-auto flex max-w-7xl items-center gap-5 px-5 py-5 md:gap-7 md:px-12">
+      <div className={`${CONTAINER} flex items-center gap-5 py-5 md:gap-7`}>
         <button
           type="button"
           onClick={poke}

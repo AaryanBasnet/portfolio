@@ -5,10 +5,12 @@ import { ICONS, skillIcons } from './icons';
 import BlockCharacter from './BlockCharacter';
 import ProjectsSection from './ProjectsSection';
 import TalkStrip from './TalkStrip';
+import { CONTAINER, FRAME } from './layout';
 
 // The Ripe section is hidden until it has real screenshots. Set to true to show it again,
 // and renumber the "Ch." labels below (Skills 04, Story 05, Contact 06).
 const SHOW_RIPE = false;
+
 
 // Hero entrance: fade in + rise 20px, per-element stagger delay, skipped entirely under reduced motion.
 const heroEnter = (delay, reduceMotion) => ({
@@ -226,7 +228,8 @@ export default function App() {
         <span className="hidden sm:inline text-[0.65rem] font-bold tracking-[0.14em] uppercase whitespace-nowrap">Play Console Version</span>
       </motion.a>
 
-      <nav className={`fixed top-0 w-full z-[1000] px-5 md:px-12 py-6 flex justify-between items-center transition-all duration-400 ${scrolled ? 'bg-cream/90 backdrop-blur-md py-4 border-b border-rule' : ''}`}>
+      <nav className={`fixed top-0 w-full z-[1000] py-6 transition-all duration-400 ${scrolled ? 'bg-cream/90 backdrop-blur-md py-4 border-b border-rule' : ''}`}>
+        <div className={`${FRAME} flex items-center justify-between`}>
         <div className="font-display text-3xl tracking-wide text-ink">{profile.name}<span className="text-red">.</span></div>
         <div className="flex gap-4 md:gap-10 items-center">
           <a href="#projects" className="hidden md:block text-[0.7rem] font-medium tracking-[0.2em] uppercase text-muted hover:text-ink relative after:content-[''] after:absolute after:-bottom-[2px] after:left-0 after:w-full after:h-[1px] after:bg-red after:scale-x-0 after:origin-left hover:after:scale-x-100 after:transition-transform after:duration-[280ms]">Projects</a>
@@ -244,6 +247,7 @@ export default function App() {
             {mobileMenuOpen ? ICONS.close : ICONS.menu}
           </button>
         </div>
+        </div>
 
         {mobileMenuOpen && (
           <motion.div
@@ -260,9 +264,10 @@ export default function App() {
         )}
       </nav>
 
-      <section className="min-h-screen px-5 md:px-12 grid grid-cols-1 lg:grid-cols-2 items-center gap-16 pt-28 pb-20 lg:pb-0 relative overflow-hidden border-b border-rule">
+      <section className="relative min-h-screen overflow-hidden border-b border-rule">
         <div className="absolute inset-0 pointer-events-none opacity-40" style={{ backgroundImage: 'linear-gradient(rgba(13,13,13,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(13,13,13,0.04) 1px, transparent 1px)', backgroundSize: '5rem 5rem', maskImage: 'radial-gradient(ellipse 70% 80% at 50% 50%, black 40%, transparent 100%)' }}></div>
         
+        <div className={`${CONTAINER} relative grid min-h-screen grid-cols-1 items-center gap-16 pb-24 pt-28 lg:grid-cols-2`}>
         <div className="relative z-10">
           <h1 className="font-display text-[clamp(4rem,10vw,9rem)] leading-[0.9] tracking-wide text-ink">
             <motion.span {...heroEnter(0.04, reduceMotion)} className="block"><WigglyWord word="AARYAN" rotations={AARYAN_ROT} /></motion.span>
@@ -335,6 +340,7 @@ export default function App() {
             ))}
           </div>
         </motion.div>
+        </div>
       </section>
 
       <TalkStrip lines={talkLines} />
@@ -343,7 +349,7 @@ export default function App() {
 
       {SHOW_RIPE && (
       <section id="ripe" className="py-32 border-t border-rule">
-        <div className="max-w-7xl mx-auto px-5 md:px-12">
+        <div className={CONTAINER}>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeInUp} className="flex flex-wrap items-end justify-between gap-x-8 gap-y-6">
             <div>
               <div className="inline-flex items-center gap-3 text-[0.65rem] font-medium tracking-[0.35em] uppercase font-mono text-red mb-6 before:content-[''] before:w-6 before:h-px before:bg-red">Ch. 03 · Currently Building</div>
@@ -386,7 +392,7 @@ export default function App() {
       )}
 
       <section id="skills" className="bg-ink text-white py-32">
-        <div className="max-w-7xl mx-auto px-5 md:px-12">
+        <div className={CONTAINER}>
           <div className="flex flex-wrap justify-between items-end gap-8">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
               <div className="inline-flex items-center gap-3 text-[0.65rem] font-medium tracking-[0.35em] uppercase font-mono text-red mb-6 before:content-[''] before:w-6 before:h-px before:bg-red">Ch. 03</div>
@@ -417,7 +423,7 @@ export default function App() {
       </section>
 
       <section id="story" className="py-32">
-        <div className="max-w-7xl mx-auto px-5 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32 items-start">
+        <div className={`${CONTAINER} grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32 items-start`}>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
             <div className="inline-flex items-center gap-3 text-[0.65rem] font-medium tracking-[0.35em] uppercase font-mono text-red mb-6 before:content-[''] before:w-6 before:h-px before:bg-red">Ch. 04</div>
             <h2 className="font-display text-[clamp(3.5rem,7vw,7rem)] leading-[0.9] tracking-wide text-ink">The<br/>Story</h2>
@@ -445,7 +451,7 @@ export default function App() {
       </section>
 
       <section id="contact" className="bg-bone text-center relative overflow-hidden py-32">
-        <div className="max-w-7xl mx-auto px-5 md:px-12 relative z-10">
+        <div className={`${CONTAINER} relative z-10`}>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="pt-8">
             <div className="inline-flex justify-center items-center gap-3 text-[0.65rem] font-medium tracking-[0.35em] uppercase font-mono text-red mb-6 before:content-[''] before:w-6 before:h-px before:bg-red">Ch. 05 · Open to Work</div>
             <h2 className="font-display text-[clamp(4rem,10vw,10rem)] leading-[0.85] tracking-wide text-ink mt-2">
@@ -589,9 +595,11 @@ export default function App() {
         </motion.div>
       )}
 
-      <footer className="px-5 md:px-12 py-8 border-t border-rule flex justify-between items-center gap-4 flex-wrap text-[0.65rem] font-medium tracking-[0.18em] uppercase text-muted font-mono">
-        <span>© {new Date().getFullYear()} {profile.name}.</span>
-        <KathmanduTime />
+      <footer className="border-t border-rule py-8 text-[0.65rem] font-medium tracking-[0.18em] uppercase text-muted font-mono">
+        <div className={`${FRAME} flex flex-wrap items-center justify-between gap-4`}>
+          <span>© {new Date().getFullYear()} {profile.name}.</span>
+          <KathmanduTime />
+        </div>
       </footer>
     </>
   );

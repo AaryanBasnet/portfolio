@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { projects, filters, profile } from './data';
 import BlockCharacter from './BlockCharacter';
+import { CONTAINER } from './layout';
 
 // Order of the grid under the featured (thesis) card, by project id in data.js.
 // Any project missing from this list is appended in data order.
@@ -342,7 +343,7 @@ export default function ProjectsSection({ onOpen }) {
 
   return (
     <section id="projects" aria-labelledby="projects-heading" className="py-32">
-      <div className="mx-auto flex max-w-7xl flex-col gap-14 px-5 md:px-12">
+      <div className={`${CONTAINER} flex flex-col gap-14`}>
         <motion.header {...rise} className="flex flex-wrap items-end justify-between gap-8">
           <div className="flex max-w-[640px] flex-col gap-5">
             <div className="font-mono inline-flex items-center gap-3 text-[0.65rem] font-medium uppercase tracking-[0.35em] text-red before:h-px before:w-6 before:bg-red before:content-['']">
