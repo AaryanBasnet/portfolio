@@ -1,8 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useSpring, useReducedMotion } from 'framer-motion';
-import { profile, projects, currentProject, skills, timeline, marqueeItems, filters } from './data';
+import { profile, currentProject, skills, timeline, marqueeItems } from './data';
 import { ICONS, skillIcons } from './icons';
 import BlockCharacter from './BlockCharacter';
+import ProjectsSection from './ProjectsSection';
+
+// The Ripe section is hidden until it has real screenshots. Set to true to show it again,
+// and renumber the "Ch." labels below (Skills 04, Story 05, Contact 06).
+const SHOW_RIPE = false;
 
 // Hero entrance: fade in + rise 20px, per-element stagger delay, skipped entirely under reduced motion.
 const heroEnter = (delay, reduceMotion) => ({
@@ -95,49 +100,8 @@ function KathmanduTime() {
   return <span>{time} · KTM</span>;
 }
 
-// Shared body for a project card. Thesis work (p.thesis) gets an extra dashed "Thesis" tag next to
-// its normal category pill, but still participates in the Web/Mobile/AI filter like every other project.
-function ProjectCardBody({ p, tag, onOpen }) {
-  return (
-    <>
-      <div className="flex items-center justify-between mb-7">
-        <span className="font-mono text-[0.7rem] text-muted tracking-[0.15em]">#{p.id}</span>
-        <div className="flex items-center gap-2">
-          {p.thesis && (
-            <span className="text-[0.6rem] font-bold tracking-[0.2em] uppercase font-mono px-3.5 py-1.5 border border-dashed border-ink/35 text-muted">Thesis</span>
-          )}
-          <span className="text-[0.6rem] font-bold tracking-[0.2em] uppercase font-mono px-3.5 py-1.5 border border-ink text-ink">{tag}</span>
-        </div>
-      </div>
-
-      <h3 className="font-display text-[clamp(2.5rem,5vw,5rem)] tracking-wide leading-[0.9] text-ink transition-colors group-hover:text-red">{p.title}</h3>
-      <p className="font-serif italic text-base text-muted mt-1.5">{p.subtitle}</p>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mt-8 items-start">
-        <div>
-          <p className="text-[0.95rem] leading-[1.85] text-muted font-light">{p.description}</p>
-          <div className="flex flex-wrap gap-2 mt-6">
-            {p.tech.map(t => (
-              <span key={t} className="text-[0.62rem] font-medium tracking-[0.15em] uppercase font-mono px-3 py-1 bg-bone text-muted border border-rule transition-colors group-hover:bg-ink group-hover:text-cream/70">{t}</span>
-            ))}
-          </div>
-          <button type="button" onClick={() => onOpen(p)} className="inline-flex items-center gap-2.5 mt-6 bg-transparent border-0 border-b border-rule pb-0.5 p-0 text-[0.7rem] font-bold tracking-[0.18em] uppercase text-ink transition-colors hover:text-red hover:border-red">
-            View Case Study
-            <span className="transition-transform group-hover:translate-x-1">{ICONS.arrow}</span>
-          </button>
-        </div>
-
-        <div className="overflow-hidden relative bg-bone border border-rule flex items-center justify-center">
-          <img src={p.image} alt={p.title} loading="lazy" className="block w-full h-auto max-h-[440px] object-contain grayscale-[0.25] contrast-105 transition-all duration-900 ease-[cubic-bezier(0.25,1,0.3,1)] group-hover:scale-[1.02] group-hover:grayscale-0 group-hover:contrast-105" />
-        </div>
-      </div>
-    </>
-  );
-}
-
 export default function App() {
   const [scrolled, setScrolled] = useState(false);
-  const [activeFilter, setActiveFilter] = useState('All');
   const [selectedProject, setSelectedProject] = useState(null);
   const [emailSquint, setEmailSquint] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -192,8 +156,6 @@ export default function App() {
       lastFocusedRef.current?.focus();
     };
   }, [selectedProject]);
-
-  const filteredProjects = activeFilter === 'All' ? projects : projects.filter(p => p.category === activeFilter);
 
   return (
     <>
@@ -336,39 +298,9 @@ export default function App() {
         </div>
       </div>
 
-      <section id="projects" className="py-32">
-        <div className="max-w-7xl mx-auto px-5 md:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-12 lg:gap-24 items-start">
-            <div className="lg:sticky lg:top-28">
-              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeInUp}>
-                <div className="inline-flex items-center gap-3 text-[0.65rem] font-medium tracking-[0.35em] uppercase font-mono text-red mb-6 before:content-[''] before:w-6 before:h-px before:bg-red">Ch. 02</div>
-                <h2 className="font-display text-[clamp(3.5rem,7vw,7rem)] leading-[0.9] tracking-wide text-ink">Projects</h2>
-                <p className="mt-6 text-[0.88rem] leading-[1.8] text-muted font-light">
-                  Digital narratives spanning full-stack systems, AI integrations, and mobile experiences.
-                </p>
+      <ProjectsSection onOpen={setSelectedProject} />
 
-                <div className="mt-10 border-l-2 border-rule">
-                  {filters.map(f => (
-                    <button key={f} className={`flex items-center gap-4 w-full px-5 py-3 bg-transparent border-none font-display text-[2.4rem] tracking-wide transition-all text-left group ${activeFilter === f ? 'text-ink' : 'text-ink/20 hover:text-ink/50 hover:translate-x-1.5'}`} onClick={() => setActiveFilter(f)}>
-                      <span className={`w-2 h-2 bg-red rounded-full shrink-0 transition-opacity animate-pulse ${activeFilter === f ? 'opacity-100' : 'opacity-0'}`} />
-                      {f}
-                    </button>
-                  ))}
-                </div>
-              </motion.div>
-            </div>
-
-            <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} key={activeFilter}>
-              {filteredProjects.map((p) => (
-                <motion.div variants={fadeInUp} key={p.id} className="project-card py-12 border-b border-rule first:border-t group">
-                  <ProjectCardBody p={p} tag={p.category} onOpen={setSelectedProject} />
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
+      {SHOW_RIPE && (
       <section id="ripe" className="py-32 border-t border-rule">
         <div className="max-w-7xl mx-auto px-5 md:px-12">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeInUp} className="flex flex-wrap items-end justify-between gap-x-8 gap-y-6">
@@ -410,12 +342,13 @@ export default function App() {
           </div>
         </div>
       </section>
+      )}
 
       <section id="skills" className="bg-ink text-white py-32">
         <div className="max-w-7xl mx-auto px-5 md:px-12">
           <div className="flex flex-wrap justify-between items-end gap-8">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
-              <div className="inline-flex items-center gap-3 text-[0.65rem] font-medium tracking-[0.35em] uppercase font-mono text-red mb-6 before:content-[''] before:w-6 before:h-px before:bg-red">Ch. 04</div>
+              <div className="inline-flex items-center gap-3 text-[0.65rem] font-medium tracking-[0.35em] uppercase font-mono text-red mb-6 before:content-[''] before:w-6 before:h-px before:bg-red">Ch. 03</div>
               <h2 className="font-display text-[clamp(3.5rem,7vw,7rem)] leading-[0.9] tracking-wide text-cream">Core Skills</h2>
             </motion.div>
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="text-[0.88rem] text-cream/45 max-w-[340px] leading-[1.8] font-light md:text-right">
@@ -445,10 +378,10 @@ export default function App() {
       <section id="story" className="py-32">
         <div className="max-w-7xl mx-auto px-5 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32 items-start">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
-            <div className="inline-flex items-center gap-3 text-[0.65rem] font-medium tracking-[0.35em] uppercase font-mono text-red mb-6 before:content-[''] before:w-6 before:h-px before:bg-red">Ch. 05</div>
+            <div className="inline-flex items-center gap-3 text-[0.65rem] font-medium tracking-[0.35em] uppercase font-mono text-red mb-6 before:content-[''] before:w-6 before:h-px before:bg-red">Ch. 04</div>
             <h2 className="font-display text-[clamp(3.5rem,7vw,7rem)] leading-[0.9] tracking-wide text-ink">The<br/>Story</h2>
             <p className="mt-8 text-[0.95rem] leading-[1.9] text-muted font-light">
-              A computing student who moved between multilingual AI agents, full-stack builds, and interface design depending on the semester.
+              A computing graduate who moved between multilingual AI agents, full-stack builds, and interface design depending on the semester.
             </p>
             <p className="mt-5 text-[0.95rem] leading-[1.9] text-muted font-light">
               Based in Kathmandu, graduated from Softwarica College of IT & E-Commerce under Coventry University.
@@ -473,7 +406,7 @@ export default function App() {
       <section id="contact" className="bg-bone text-center relative overflow-hidden py-32">
         <div className="max-w-7xl mx-auto px-5 md:px-12 relative z-10">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="pt-8">
-            <div className="inline-flex justify-center items-center gap-3 text-[0.65rem] font-medium tracking-[0.35em] uppercase font-mono text-red mb-6 before:content-[''] before:w-6 before:h-px before:bg-red">Ch. 06 · Open to Work</div>
+            <div className="inline-flex justify-center items-center gap-3 text-[0.65rem] font-medium tracking-[0.35em] uppercase font-mono text-red mb-6 before:content-[''] before:w-6 before:h-px before:bg-red">Ch. 05 · Open to Work</div>
             <h2 className="font-display text-[clamp(4rem,10vw,10rem)] leading-[0.85] tracking-wide text-ink mt-2">
               Let's<br/><em className="font-serif italic text-red">Build.</em>
             </h2>

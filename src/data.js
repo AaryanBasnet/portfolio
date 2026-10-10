@@ -9,10 +9,10 @@ export const profile = {
   resume: '/Aaryan_Basnet_Resume.pdf',
   social: {
     github: 'https://github.com/AaryanBasnet',
-    linkedin: 'https://www.linkedin.com/in/aaryan-basnet-4511a22a4/',
+    linkedin: 'https://www.linkedin.com/in/aaryan-basnet',
   },
   stats: [
-    { num: '15+', label: 'Projects Developed' },
+    { num: '6', label: 'Featured Projects' },
     { num: '3+', label: 'Years Building' },
     { num: '2026', label: 'Graduated' },
   ],
@@ -26,12 +26,12 @@ export const projects = [
     title: 'VENURE WEB',
     subtitle: 'Venue Booking Platform',
     description: 'A React frontend for discovering and booking event venues. Includes advanced filters, multi-step booking flows, and an owner dashboard for managing listings and bookings.',
-    tech: ['React', 'Tailwind', 'Redux'],
+    tech: ['React', 'Tailwind', 'Zustand'],
     link: 'https://github.com/AaryanBasnet/venure-frontend',
     website: 'https://venure-frontend.vercel.app/',
     image: '/projects/venure.png',
     role: 'Frontend development and booking flow design',
-    year: '2024',
+    year: '2025 – 2026',
     overview: 'Event customers need to compare venues quickly, and venue owners need a clean way to manage listings and booking requests. This React frontend handles both sides, with venue discovery through advanced filters, a multi-step booking flow for customers, and an owner dashboard for managing listings and bookings.',
     images: [
       { src: '/projects/venure.png', caption: 'Landing page for venue discovery and search' },
@@ -65,10 +65,10 @@ export const projects = [
     description: 'A complete ordering system featuring interactive 3D cake customization, eSewa payments, loyalty rewards, and a secure Node.js/MongoDB backend.',
     tech: ['React', 'Three.js', 'Zustand', 'Express', 'MongoDB'],
     link: 'https://github.com/AaryanBasnet/SweetNestFrontend',
-    website: '#',
+    website: 'https://sweetnest.aaryanbasnet.com.np/',
     image: '/projects/sweetnest.png',
     role: 'Full-stack development, 3D customization, payment integration',
-    year: '2025',
+    year: '2025 – 2026',
     overview: 'Custom cake ordering needs to feel visual and flexible, and the business needs secure payments, order tracking, and customer retention. SweetNest covers both, pairing interactive 3D cake customization on the front end with eSewa payments, loyalty rewards, and a secure Node.js/MongoDB backend.',
     images: [
       { src: '/projects/sweetnest.png', caption: 'Cake product page with pricing and customization entry point' },
@@ -85,7 +85,7 @@ export const projects = [
     website: '#',
     image: '/projects/crownhour.png',
     role: 'Full-stack development, product UI, admin workflows',
-    year: '2024',
+    year: '2025',
     overview: 'Luxury shoppers need a polished storefront, and store owners need one place to manage inventory, orders, and customer activity. CrownHour is a full-stack MERN platform covering both sides, from product browsing, cart, checkout, and order tracking on the front end to an admin dashboard for inventory and analytics on the back end.',
     images: [
       { src: '/projects/crownhour.png', caption: 'Product landing page with live pricing and checkout entry points' },
@@ -148,7 +148,7 @@ export const currentProject = {
 export const skills = [
   {
     title: 'Frontend',
-    items: ['React', 'Tailwind CSS', 'Zustand / Redux', 'Framer Motion'],
+    items: ['React', 'Tailwind CSS', 'Zustand / TanStack Query', 'Framer Motion'],
   },
   {
     title: 'Backend',
