@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { projects, filters } from './data';
+import { projects, filters, profile } from './data';
+import BlockCharacter from './BlockCharacter';
 
 // Order of the grid under the featured (thesis) card, by project id in data.js.
 // Any project missing from this list is appended in data order.
@@ -104,10 +105,24 @@ function Screen({ project, hero }) {
 function Media({ project, ratio }) {
   const look = LOOK[project.id] || DEFAULT_LOOK;
   return (
-    <div className={`relative overflow-hidden border-[1.5px] border-ink ${ratio}`} style={{ backgroundColor: look.bg }}>
+    <div
+      className={`relative overflow-hidden border-[1.5px] border-ink transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.25,1,0.3,1)] group-hover:-translate-x-1 group-hover:-translate-y-1 group-hover:shadow-[8px_8px_0_var(--color-red)] group-focus-within:-translate-x-1 group-focus-within:-translate-y-1 group-focus-within:shadow-[8px_8px_0_var(--color-red)] ${ratio}`}
+      style={{ backgroundColor: look.bg }}
+    >
       <span className="font-mono absolute left-3.5 top-3.5 z-10 border-[1.5px] border-ink bg-cream px-2.5 py-1.5 text-[0.68rem] font-medium uppercase tracking-[0.1em]">
         {project.thesis ? `${project.category} · Thesis` : project.category}
       </span>
+      {project.blockSays && (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute bottom-3.5 left-3.5 z-10 flex max-w-[84%] translate-y-1 items-end gap-2.5 opacity-0 transition duration-200 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100"
+        >
+          <BlockCharacter width={40} height={33} eyeSize={10} pupilSize={4} eyeGap={8} eyeTop={10} trackCursor={false} lookX={3} lookY={1} blink />
+          <span className="relative mb-1 bg-ink px-3 py-2 font-mono text-[0.7rem] leading-snug text-cream before:absolute before:-left-[6px] before:bottom-3 before:border-y-[6px] before:border-r-[6px] before:border-y-transparent before:border-r-ink before:content-['']">
+            {project.blockSays}
+          </span>
+        </div>
+      )}
       <span
         aria-hidden="true"
         className="absolute right-3.5 top-3.5 z-10 flex h-11 w-11 items-center justify-center border-[1.5px] border-ink bg-cream text-ink transition-colors group-hover:bg-ink group-hover:text-cream"
@@ -154,48 +169,67 @@ function TitleLink({ project, onOpen, children }) {
   );
 }
 
-function CardFooter({ project }) {
-  const hasLive = project.website && project.website !== '#';
-  const isFigma = Boolean(project.websiteLabel);
-  const pill = `relative z-10 inline-flex items-center gap-2 rounded-full px-4 py-2 text-[0.68rem] font-medium tracking-[0.12em] transition-colors ${focusRing}`;
+const PILL = `relative z-10 inline-flex items-center gap-2 rounded-full px-4 py-2 font-mono text-[0.68rem] font-medium uppercase tracking-[0.12em] transition-colors ${focusRing}`;
+
+function hasLiveLink(project) {
+  return Boolean(project.website && project.website !== '#');
+}
+
+function GithubPill({ project }) {
   return (
-    <div className="font-mono flex flex-wrap items-center justify-between gap-3 border-t border-rule pt-4 text-xs uppercase tracking-[0.1em]">
+    <a href={project.link} target="_blank" rel="noreferrer" className={`${PILL} border border-ink/30 text-ink hover:border-ink hover:bg-ink hover:text-cream`}>
+      GitHub <span aria-hidden="true">↗</span>
+    </a>
+  );
+}
+
+// Main link, shown in the gap beside the title: live site, else the Figma file, else GitHub.
+function PrimaryLink({ project }) {
+  if (hasLiveLink(project)) {
+    const isFigma = Boolean(project.websiteLabel);
+    return (
+      <a href={project.website} target="_blank" rel="noreferrer" className={`${PILL} bg-ink text-cream hover:bg-red`}>
+        {!isFigma && (
+          <span className="relative flex h-2 w-2" aria-hidden="true">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+          </span>
+        )}
+        {isFigma ? 'Figma file' : 'Live site'} <span aria-hidden="true">↗</span>
+      </a>
+    );
+  }
+  return project.link ? <GithubPill project={project} /> : null;
+}
+
+function CardFooter({ project }) {
+  // GitHub moves to the footer only when the title row already shows a live/Figma link.
+  return (
+    <div className="font-mono flex min-h-[4.25rem] flex-wrap items-center justify-between gap-3 border-t border-rule pt-4 text-xs uppercase tracking-[0.1em]">
       <span className="font-medium underline decoration-[1.5px] underline-offset-[5px] transition-colors group-hover:text-red">
         View case study →
       </span>
-      <span className="flex flex-wrap items-center gap-2">
-        {hasLive && (
-          <a href={project.website} target="_blank" rel="noreferrer" className={`${pill} bg-ink text-cream hover:bg-red`}>
-            {!isFigma && (
-              <span className="relative flex h-2 w-2" aria-hidden="true">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-              </span>
-            )}
-            {isFigma ? 'Figma file' : 'Live site'} <span aria-hidden="true">↗</span>
-          </a>
-        )}
-        {project.link && (
-          <a href={project.link} target="_blank" rel="noreferrer" className={`${pill} border border-ink/30 text-ink hover:border-ink hover:bg-ink hover:text-cream`}>
-            GitHub <span aria-hidden="true">↗</span>
-          </a>
-        )}
-      </span>
+      {hasLiveLink(project) && project.link && <GithubPill project={project} />}
     </div>
   );
 }
 
 function FeaturedCard({ project, number, onOpen }) {
   return (
-    <article className="group relative flex cursor-pointer flex-wrap items-stretch gap-10">
+    <article
+      className="group relative flex cursor-pointer flex-wrap items-stretch gap-10"
+    >
       <div className="min-w-0 flex-[1.5_1_520px]">
         <Media project={project} ratio="aspect-[3/2]" />
       </div>
       <div className="flex min-w-0 flex-[1_1_320px] flex-col justify-end gap-5">
-        <div className="font-mono flex items-center gap-3.5 text-xs tracking-[0.14em] text-red">
-          <span>#{pad(number)}</span>
-          <span className="h-[1.5px] w-6 bg-red" />
-          <span>FEATURED · THESIS</span>
+        <div className="font-mono flex flex-wrap items-center justify-between gap-3 text-xs tracking-[0.14em] text-red">
+          <span className="flex items-center gap-3.5">
+            <span>#{pad(number)}</span>
+            <span className="h-[1.5px] w-6 bg-red" />
+            <span>FEATURED · THESIS</span>
+          </span>
+          <PrimaryLink project={project} />
         </div>
         <h3 className="font-display m-0 text-[clamp(56px,6vw,88px)] font-normal leading-[0.92] tracking-wide">
           <TitleLink project={project} onOpen={onOpen}>{project.title}</TitleLink>
@@ -211,20 +245,75 @@ function FeaturedCard({ project, number, onOpen }) {
 
 function ProjectCard({ project, number, onOpen }) {
   return (
-    <article className="group relative flex min-w-0 cursor-pointer flex-col gap-[22px]">
+    <article
+      className="group relative flex min-w-0 cursor-pointer flex-col gap-[22px]"
+    >
       <Media project={project} ratio="aspect-[4/3]" />
       <div className="flex flex-col gap-3">
-        <div className="flex items-baseline gap-4">
-          <span className="font-mono text-xs tracking-[0.14em] text-red">#{pad(number)}</span>
-          <h3 className="font-display m-0 text-[48px] font-normal leading-[0.95] tracking-wide">
-            <TitleLink project={project} onOpen={onOpen}>{project.title}</TitleLink>
-          </h3>
+        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
+          <div className="flex items-baseline gap-4">
+            <span className="font-mono text-xs tracking-[0.14em] text-red">#{pad(number)}</span>
+            <h3 className="font-display m-0 text-[48px] font-normal leading-[0.95] tracking-wide">
+              <TitleLink project={project} onOpen={onOpen}>{project.title}</TitleLink>
+            </h3>
+          </div>
+          <PrimaryLink project={project} />
         </div>
         <p className="font-serif m-0 text-[1.2rem] italic text-muted">{project.subtitle}</p>
         <p className="m-0 max-w-[520px] text-[0.95rem] font-light leading-[1.7] text-muted">{project.description}</p>
         <TagList tags={project.tech} />
       </div>
       <CardFooter project={project} />
+    </article>
+  );
+}
+
+// Bonus card linking to the playful second portfolio. Same shape as a project card, but it opens the site instead of a case study.
+const KHEL = {
+  id: 'khel',
+  category: 'Bonus',
+  title: 'KHEL·1',
+  subtitle: 'The playful version of this portfolio',
+  cardImage: '/projects/khel-card.jpg',
+  blockSays: 'This one is a Game Boy.',
+};
+
+function KhelCard() {
+  return (
+    <article
+      className="group relative flex min-w-0 cursor-pointer flex-col gap-[22px]"
+    >
+      <Media project={KHEL} ratio="aspect-[4/3]" />
+      <div className="flex flex-col gap-3">
+        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
+          <div className="flex items-baseline gap-4">
+            <span className="font-mono text-xs tracking-[0.14em] text-red">+</span>
+            <h3 className="font-display m-0 text-[48px] font-normal leading-[0.95] tracking-wide">
+              <a
+                href={profile.consoleSite}
+                target="_blank"
+                rel="noreferrer"
+                className={`text-inherit no-underline transition-colors group-hover:text-red after:absolute after:inset-0 after:content-[''] ${focusRing}`}
+              >
+                {KHEL.title}
+              </a>
+            </h3>
+          </div>
+          <span className={`${PILL} border border-ink/30 text-ink group-hover:border-ink group-hover:bg-ink group-hover:text-cream`}>
+            ▶ Press start <span aria-hidden="true">↗</span>
+          </span>
+        </div>
+        <p className="font-serif m-0 text-[1.2rem] italic text-muted">{KHEL.subtitle}</p>
+        <p className="m-0 max-w-[520px] text-[0.95rem] font-light leading-[1.7] text-muted">
+          The same portfolio rebuilt as a handheld game console, with a shelf of project cartridges you can insert.
+        </p>
+        <TagList tags={['React 19', 'TypeScript', 'Tailwind 4', 'Web Audio']} />
+      </div>
+      <div className="font-mono flex min-h-[4.25rem] items-center border-t border-rule pt-4 text-xs uppercase tracking-[0.1em]">
+        <span className="font-medium underline decoration-[1.5px] underline-offset-[5px] transition-colors group-hover:text-red">
+          Open KHEL·1 →
+        </span>
+      </div>
     </article>
   );
 }
@@ -305,6 +394,11 @@ export default function ProjectsSection({ onOpen }) {
                 <ProjectCard project={project} number={i + 1 + offset} onOpen={onOpen} />
               </motion.div>
             ))}
+            {filter === 'All' && (
+              <motion.div {...rise}>
+                <KhelCard />
+              </motion.div>
+            )}
           </div>
         )}
       </div>

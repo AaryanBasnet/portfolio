@@ -31,6 +31,7 @@ export const projects = [
     website: 'https://venure-frontend.vercel.app/',
     image: '/projects/venure.png',
     cardImage: '/projects/venure-web-card.jpg',
+    blockSays: "Live. And he is still improving it.",
     role: 'Frontend development and booking flow design',
     year: '2025 – 2026',
     overview: 'Event customers need to compare venues quickly, and venue owners need a clean way to manage listings and booking requests. This React frontend handles both sides, with venue discovery through advanced filters, a multi-step booking flow for customers, and an owner dashboard for managing listings and bookings.',
@@ -49,6 +50,7 @@ export const projects = [
     website: '#',
     image: '/projects/venure_app_home.png',
     cardImage: '/projects/venure-app-card.jpg',
+    blockSays: "Pay with a fingerprint. Shake to log out.",
     role: 'Mobile app architecture: Clean Architecture, MVVM, and Bloc state management',
     year: '2025',
     overview: 'Venue booking needed to feel fast and secure on mobile. Built on Clean Architecture with MVVM and Bloc, with Hive for offline caching and a REST/JWT backend. Two details worth noting: a shake-to-logout gesture on the profile screen, and biometric authentication gating every Stripe payment.',
@@ -70,6 +72,7 @@ export const projects = [
     website: 'https://sweetnest.aaryanbasnet.com.np/',
     image: '/projects/sweetnest.png',
     cardImage: '/projects/sweetnest-card.jpg',
+    blockSays: "Rotate the cake. In 3D.",
     video: {
       src: '/projects/sweetnest-promo.mp4',
       poster: '/projects/sweetnest-promo-poster.jpg',
@@ -96,6 +99,7 @@ export const projects = [
     website: '#',
     image: '/projects/crownhour.png',
     cardImage: '/projects/crownhour-card.jpg',
+    blockSays: "MFA, audit logs and rate limits.",
     role: 'Full-stack development, product UI, admin workflows',
     year: '2025',
     overview: 'Luxury shoppers need a polished storefront, and store owners need one place to manage inventory, orders, and customer activity. CrownHour is a full-stack MERN platform covering both sides, from product browsing, cart, checkout, and order tracking on the front end to an admin dashboard for inventory and analytics on the back end.',
@@ -115,6 +119,7 @@ export const projects = [
     website: '#',
     image: '/projects/tara.png',
     cardImage: '/projects/tia-card.jpg',
+    blockSays: "His thesis. He is proud of it.",
     role: 'AI system design, RAG pipeline, backend prototyping',
     year: '2026',
     overview: 'Airport passengers often need fast answers in both English and Nepali, but that information is scattered across FAQs and live status sources. This virtual helpdesk for Tribhuvan International Airport brings it into one place, using RAG, LangGraph, and Ollama to answer questions and pull real-time flight status.',
@@ -133,6 +138,7 @@ export const projects = [
     websiteLabel: 'View in Figma',
     image: '/projects/sweetnest_ui_configurator.png',
     cardImage: '/projects/sweetnest-ui-card.jpg',
+    blockSays: "The design behind SweetNest.",
     role: 'UI/UX design: full e-commerce flow, design system',
     year: '2025',
     overview: 'The end-to-end UI/UX design for the SweetNest cake platform, built in Figma. It covers a homepage and product catalog, an interactive cake configurator for choosing size, flavor, color, and toppers, and a full cart-to-checkout flow, all built on a shared type scale and color system.',
@@ -193,14 +199,18 @@ export const timeline = [
   },
 ];
 
-export const marqueeItems = [
-  'Full-Stack Engineering',
-  'React',
-  'Flutter & Dart',
-  'LLM & RAG Systems',
-  'Node.js & Express',
-  'MongoDB Aggregation',
-  'Figma Design Systems',
+// What the block character says in the strip under the hero, one line at a time.
+export const talkLines = [
+  "Hi! I'm the block. I live here.",
+  'Aaryan is looking for an internship: full-stack, frontend or backend.',
+  'He once found a coupon that worked eight times. Fixed it.',
+  'His thesis: a chatbot that speaks Nepali at the airport.',
+  'You can rotate the cake. In 3D.',
+  "Right now he's refactoring Venure.",
+  'Side quest: a tomato farming game in Godot.',
+  'He built this portfolio twice. The other one is a Game Boy.',
+  'One Mongoose method made an endpoint nearly 2× faster.',
+  'Go on. Poke me.',
 ];
 
 export const filters = ['All', 'Web', 'Mobile', 'AI', 'UI/UX'];

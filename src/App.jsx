@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useSpring, useReducedMotion } from 'framer-motion';
-import { profile, currentProject, skills, timeline, marqueeItems } from './data';
+import { profile, currentProject, skills, timeline, talkLines } from './data';
 import { ICONS, skillIcons } from './icons';
 import BlockCharacter from './BlockCharacter';
 import ProjectsSection from './ProjectsSection';
+import TalkStrip from './TalkStrip';
 
 // The Ripe section is hidden until it has real screenshots. Set to true to show it again,
 // and renumber the "Ch." labels below (Skills 04, Story 05, Contact 06).
@@ -312,7 +313,6 @@ export default function App() {
             eyeTop={34}
             className="hidden md:block absolute top-0 left-1/2 z-[1]"
             style={{ transform: PEEK_TRANSFORM[peekState], transition: 'transform .4s cubic-bezier(.34,1.3,.4,1)' }}
-            trackCursor={!reduceMotion}
           />
 
           <div className="w-[min(340px,72vw)] aspect-[340/440] bg-ink clip-polygon relative z-[2] overflow-hidden shadow-[20px_20px_0_var(--bone)] group transition-transform duration-[600ms] ease-in-out hover:scale-[1.012]">
@@ -337,16 +337,7 @@ export default function App() {
         </motion.div>
       </section>
 
-      <div className="bg-ink py-4 overflow-hidden border-y border-white/10">
-        <div className="flex w-max animate-[marquee_22s_linear_infinite]">
-          {[...marqueeItems, ...marqueeItems, ...marqueeItems].map((item, i) => (
-            <span key={i} className="flex items-center gap-10 px-10 text-[0.68rem] font-medium tracking-[0.3em] uppercase text-cream/50 font-mono whitespace-nowrap">
-              {item}
-              <span className="text-red opacity-70">//</span>
-            </span>
-          ))}
-        </div>
-      </div>
+      <TalkStrip lines={talkLines} />
 
       <ProjectsSection onOpen={setSelectedProject} />
 
@@ -480,7 +471,6 @@ export default function App() {
                 eyeGap={15}
                 eyeTop={20}
                 squint={emailSquint}
-                trackCursor={!reduceMotion}
                 className="hidden md:block absolute z-[1] group-hover:animate-[block-nod_1.2s_ease-in-out]"
                 style={{ left: -82, bottom: 2 }}
               />

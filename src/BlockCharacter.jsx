@@ -42,14 +42,18 @@ export default function BlockCharacter({
   eyeTop = 34,
   squint = false,
   trackCursor = true,
+  lookX = 0,   // fixed pupil offset in px, used when trackCursor is off (e.g. glancing at a speech bubble)
+  lookY = 0,
+  blink = false,
   className = '',
   style = {},
 }) {
   const eyesRef = useRef(null);
-  const offset = useCursorTracking(eyesRef, { enabled: trackCursor });
+  const tracked = useCursorTracking(eyesRef, { enabled: trackCursor });
+  const offset = trackCursor ? tracked : { x: lookX, y: lookY };
 
   return (
-    <div className={`block-char ${className}`} style={style} aria-hidden="true">
+    <div className={`block-char ${blink ? 'block-char--blink' : ''} ${className}`} style={style} aria-hidden="true">
       <div className="block-char__head" style={{ width, height }}>
         <div ref={eyesRef} className="block-char__eyes" style={{ top: eyeTop, gap: eyeGap }}>
           {[0, 1].map(i => (

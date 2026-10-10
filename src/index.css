@@ -157,6 +157,27 @@ body,
   transition: transform .05s linear;
 }
 
+@keyframes block-spin {
+  to { transform: rotate(360deg); }
+}
+
+.block-spin {
+  animation: block-spin 0.8s ease 1;
+}
+
+@keyframes block-blink {
+  0%, 90%, 100% { transform: scaleY(1); }
+  94% { transform: scaleY(0.12); }
+}
+
+.block-char--blink .block-char__eye {
+  animation: block-blink 5.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .block-char--blink .block-char__eye { animation: none; }
+}
+
 .notfound-drift {
   animation: block-drift 6s ease-in-out infinite;
 }
