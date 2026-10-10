@@ -100,6 +100,56 @@ function KathmanduTime() {
   return <span>{time} · KTM</span>;
 }
 
+// Looping, muted promo reel for a case study. Autoplays unless the visitor prefers reduced motion; always has a pause button.
+function PromoVideo({ video, title }) {
+  const ref = useRef(null);
+  const reduceMotion = useReducedMotion();
+  const [playing, setPlaying] = useState(false);
+
+  useEffect(() => {
+    const v = ref.current;
+    if (!v) return;
+    v.muted = true;
+    if (reduceMotion) return;
+    v.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+  }, [reduceMotion]);
+
+  const toggle = () => {
+    const v = ref.current;
+    if (!v) return;
+    if (v.paused) { v.play().then(() => setPlaying(true)).catch(() => {}); } else { v.pause(); setPlaying(false); }
+  };
+
+  return (
+    <figure className="m-0 mx-auto w-full max-w-[320px]">
+      <div className="relative aspect-[9/16] overflow-hidden border border-rule bg-ink">
+        <video
+          ref={ref}
+          src={video.src}
+          poster={video.poster}
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          onPlay={() => setPlaying(true)}
+          onPause={() => setPlaying(false)}
+          aria-label={`${title}: ${video.caption}`}
+          className="block h-full w-full object-cover"
+        />
+        <button
+          type="button"
+          onClick={toggle}
+          aria-label={playing ? 'Pause promo video' : 'Play promo video'}
+          className="absolute bottom-3 right-3 flex h-11 w-11 items-center justify-center border border-white/60 bg-ink/70 font-mono text-[0.7rem] text-white backdrop-blur-sm transition-colors hover:bg-red"
+        >
+          {playing ? '❚❚' : '▶'}
+        </button>
+      </div>
+      <figcaption className="mt-3 font-mono text-[0.68rem] tracking-[0.05em] text-muted">{video.caption}</figcaption>
+    </figure>
+  );
+}
+
 export default function App() {
   const [scrolled, setScrolled] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
@@ -475,6 +525,7 @@ export default function App() {
               <div className="order-2 min-[900px]:order-1 bg-bone min-[900px]:h-full min-[900px]:overflow-y-auto">
                 {selectedProject.images.length > 1 ? (
                   <div className="p-4 pt-8 md:p-8 md:pt-10 flex flex-col gap-8">
+                    {selectedProject.video && <PromoVideo video={selectedProject.video} title={selectedProject.title} />}
                     {selectedProject.images.map((img, i) => (
                       <figure key={img.src} className="m-0">
                         <div className="relative border border-rule bg-white">

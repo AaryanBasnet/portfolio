@@ -89,44 +89,41 @@ function PhoneFrame({ children }) {
   );
 }
 
-// Real screenshot when the file loads; the drawn placeholder if it is missing or fails.
+// Drawn placeholder shown for projects that have no mockup image (`cardImage`) yet.
 function Screen({ project, hero }) {
-  const [failed, setFailed] = useState(false);
   const isPhone = project.category === 'Mobile';
-  const content = project.image && !failed ? (
-    <img
-      src={project.image}
-      alt={`${project.title}: screenshot`}
-      loading="lazy"
-      onError={() => setFailed(true)}
-      className="h-full w-full object-cover object-top"
-    />
-  ) : isPhone ? (
-    <PhoneSkeleton hero={hero} />
+  return isPhone ? (
+    <PhoneFrame><PhoneSkeleton hero={hero} /></PhoneFrame>
   ) : (
-    <BrowserSkeleton hero={hero} />
+    <BrowserFrame><BrowserSkeleton hero={hero} /></BrowserFrame>
   );
-  return isPhone ? <PhoneFrame>{content}</PhoneFrame> : <BrowserFrame>{content}</BrowserFrame>;
 }
 
 /* ---------- card pieces ---------- */
 
-function Media({ project, ratio, onOpen }) {
+function Media({ project, ratio }) {
   const look = LOOK[project.id] || DEFAULT_LOOK;
   return (
     <div className={`relative overflow-hidden border-[1.5px] border-ink ${ratio}`} style={{ backgroundColor: look.bg }}>
       <span className="font-mono absolute left-3.5 top-3.5 z-10 border-[1.5px] border-ink bg-cream px-2.5 py-1.5 text-[0.68rem] font-medium uppercase tracking-[0.1em]">
         {project.thesis ? `${project.category} · Thesis` : project.category}
       </span>
-      <button
-        type="button"
-        onClick={() => onOpen(project)}
-        aria-label={`Open ${project.title} case study`}
-        className={`absolute right-3.5 top-3.5 z-10 flex h-11 w-11 items-center justify-center border-[1.5px] border-ink bg-cream text-ink transition-colors hover:text-red ${focusRing}`}
+      <span
+        aria-hidden="true"
+        className="absolute right-3.5 top-3.5 z-10 flex h-11 w-11 items-center justify-center border-[1.5px] border-ink bg-cream text-ink transition-colors group-hover:bg-ink group-hover:text-cream"
       >
         <ArrowIcon />
-      </button>
-      <Screen project={project} hero={look.hero} />
+      </span>
+      {project.cardImage ? (
+        <img
+          src={project.cardImage}
+          alt={`${project.title}: ${project.subtitle}`}
+          loading="lazy"
+          className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.3,1)] group-hover:scale-[1.03]"
+        />
+      ) : (
+        <Screen project={project} hero={look.hero} />
+      )}
     </div>
   );
 }
@@ -134,7 +131,7 @@ function Media({ project, ratio, onOpen }) {
 function TagList({ tags }) {
   return (
     <ul className="flex flex-wrap gap-2">
-      {tags.map((tag) => (
+      {tags.slice(0, 4).map((tag) => (
         <li key={tag} className="font-mono border border-rule bg-bone px-[9px] py-[5px] text-[0.68rem] uppercase tracking-[0.08em] text-muted">
           {tag}
         </li>
@@ -143,28 +140,44 @@ function TagList({ tags }) {
   );
 }
 
-function CardFooter({ project, onOpen }) {
-  const linkBase = `py-3.5 hover:text-red ${focusRing}`;
-  const hasLive = project.website && project.website !== '#';
-  const liveLabel = project.websiteLabel ? 'Figma' : 'Live';
+function TitleLink({ project, onOpen, children }) {
+  // The button stretches over the whole card (after:absolute after:inset-0), so a click anywhere opens the case study.
   return (
-    <div className="font-mono flex flex-wrap items-center justify-between gap-3 border-t border-rule pt-0.5 text-xs uppercase tracking-[0.1em]">
-      <button
-        type="button"
-        onClick={() => onOpen(project)}
-        className={`${linkBase} cursor-pointer border-0 bg-transparent p-0 py-3.5 font-medium underline decoration-[1.5px] underline-offset-[5px]`}
-      >
+    <button
+      type="button"
+      onClick={() => onOpen(project)}
+      aria-label={`Open ${project.title} case study`}
+      className={`m-0 cursor-pointer border-0 bg-transparent p-0 text-left text-inherit transition-colors group-hover:text-red after:absolute after:inset-0 after:content-[''] ${focusRing}`}
+    >
+      {children}
+    </button>
+  );
+}
+
+function CardFooter({ project }) {
+  const hasLive = project.website && project.website !== '#';
+  const isFigma = Boolean(project.websiteLabel);
+  const pill = `relative z-10 inline-flex items-center gap-2 rounded-full px-4 py-2 text-[0.68rem] font-medium tracking-[0.12em] transition-colors ${focusRing}`;
+  return (
+    <div className="font-mono flex flex-wrap items-center justify-between gap-3 border-t border-rule pt-4 text-xs uppercase tracking-[0.1em]">
+      <span className="font-medium underline decoration-[1.5px] underline-offset-[5px] transition-colors group-hover:text-red">
         View case study →
-      </button>
-      <span className="flex gap-[18px] text-muted">
+      </span>
+      <span className="flex flex-wrap items-center gap-2">
         {hasLive && (
-          <a href={project.website} target="_blank" rel="noreferrer" className={linkBase}>
-            {liveLabel} ↗
+          <a href={project.website} target="_blank" rel="noreferrer" className={`${pill} bg-ink text-cream hover:bg-red`}>
+            {!isFigma && (
+              <span className="relative flex h-2 w-2" aria-hidden="true">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+              </span>
+            )}
+            {isFigma ? 'Figma file' : 'Live site'} <span aria-hidden="true">↗</span>
           </a>
         )}
         {project.link && (
-          <a href={project.link} target="_blank" rel="noreferrer" className={linkBase}>
-            GitHub ↗
+          <a href={project.link} target="_blank" rel="noreferrer" className={`${pill} border border-ink/30 text-ink hover:border-ink hover:bg-ink hover:text-cream`}>
+            GitHub <span aria-hidden="true">↗</span>
           </a>
         )}
       </span>
@@ -174,9 +187,9 @@ function CardFooter({ project, onOpen }) {
 
 function FeaturedCard({ project, number, onOpen }) {
   return (
-    <article className="flex flex-wrap items-stretch gap-10">
+    <article className="group relative flex cursor-pointer flex-wrap items-stretch gap-10">
       <div className="min-w-0 flex-[1.5_1_520px]">
-        <Media project={project} ratio="aspect-[3/2]" onOpen={onOpen} />
+        <Media project={project} ratio="aspect-[3/2]" />
       </div>
       <div className="flex min-w-0 flex-[1_1_320px] flex-col justify-end gap-5">
         <div className="font-mono flex items-center gap-3.5 text-xs tracking-[0.14em] text-red">
@@ -184,11 +197,13 @@ function FeaturedCard({ project, number, onOpen }) {
           <span className="h-[1.5px] w-6 bg-red" />
           <span>FEATURED · THESIS</span>
         </div>
-        <h3 className="font-display m-0 text-[clamp(56px,6vw,88px)] font-normal leading-[0.92] tracking-wide">{project.title}</h3>
+        <h3 className="font-display m-0 text-[clamp(56px,6vw,88px)] font-normal leading-[0.92] tracking-wide">
+          <TitleLink project={project} onOpen={onOpen}>{project.title}</TitleLink>
+        </h3>
         <p className="font-serif m-0 text-[1.35rem] italic text-muted">{project.subtitle}</p>
         <p className="m-0 max-w-[440px] text-[1rem] font-light leading-[1.7] text-muted">{project.description}</p>
         <TagList tags={project.tech} />
-        <CardFooter project={project} onOpen={onOpen} />
+        <CardFooter project={project} />
       </div>
     </article>
   );
@@ -196,18 +211,20 @@ function FeaturedCard({ project, number, onOpen }) {
 
 function ProjectCard({ project, number, onOpen }) {
   return (
-    <article className="flex min-w-0 flex-col gap-[22px]">
-      <Media project={project} ratio="aspect-[4/3]" onOpen={onOpen} />
+    <article className="group relative flex min-w-0 cursor-pointer flex-col gap-[22px]">
+      <Media project={project} ratio="aspect-[4/3]" />
       <div className="flex flex-col gap-3">
         <div className="flex items-baseline gap-4">
           <span className="font-mono text-xs tracking-[0.14em] text-red">#{pad(number)}</span>
-          <h3 className="font-display m-0 text-[48px] font-normal leading-[0.95] tracking-wide">{project.title}</h3>
+          <h3 className="font-display m-0 text-[48px] font-normal leading-[0.95] tracking-wide">
+            <TitleLink project={project} onOpen={onOpen}>{project.title}</TitleLink>
+          </h3>
         </div>
         <p className="font-serif m-0 text-[1.2rem] italic text-muted">{project.subtitle}</p>
         <p className="m-0 max-w-[520px] text-[0.95rem] font-light leading-[1.7] text-muted">{project.description}</p>
         <TagList tags={project.tech} />
       </div>
-      <CardFooter project={project} onOpen={onOpen} />
+      <CardFooter project={project} />
     </article>
   );
 }
