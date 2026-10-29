@@ -16,7 +16,7 @@ export const profile = {
     { num: '3+', label: 'Years Building' },
     { num: '2026', label: 'Graduated' },
   ],
-  tagline: "Three years of building things solo, most recently a bilingual chatbot that helps travelers navigate Tribhuvan International Airport in English or Nepali.",
+  tagline: "Three years of building web apps for Nepal, plus a Python thesis: a bilingual English/Nepali assistant for Tribhuvan International Airport.",
 };
 
 export const projects = [
@@ -36,6 +36,7 @@ export const projects = [
     year: '2025 – 2026',
     overview: 'Booking an event venue in Nepal is a conversation, not a cart: the customer asks for a date and a shift, the venue replies with a quotation priced per plate, and only a paid deposit confirms the booking. Venure covers that whole flow for customers, venue owners and admins. Owners join through an approval process with private documents, bookings cannot double up (a database unique index, proven by a 50-way race test), and a Bikram Sambat calendar sits beside the English dates. About 1,700 automated tests run across the stack, and a server-enforced read-only demo (customer, owner and admin) is one click from the login page.',
     images: [
+      { src: '/projects/venure-demo.gif', caption: 'A tour of the owner demo: dashboard, a customer request, the quotation builder, bookings, analytics and venues' },
       { src: '/projects/venure-home.jpg', caption: 'Landing page for venue discovery and search' },
       { src: '/projects/venure-venues.jpg', caption: 'Browse and filter venues by type, kind of space, guests and price' },
       { src: '/projects/venure-quotation.jpg', caption: 'The venue replies with a per-plate quotation for the guests the customer asked for' },
@@ -117,18 +118,21 @@ export const projects = [
     thesis: true,
     title: 'TIA VIRTUAL ASSISTANT',
     subtitle: 'Multilingual Helpdesk',
-    description: 'A virtual helpdesk for Tribhuvan International Airport supporting English and Nepali. Powered by RAG, LangGraph, and Ollama to answer FAQs and provide real-time flight status.',
+    description: 'My final-year thesis: a bilingual English/Nepali helpdesk for Tribhuvan International Airport. A LangGraph agent chooses between document search (RAG on ChromaDB), flight status, live weather and a SIM-card identity check, all on a local model through Ollama.',
     tech: ['LangGraph', 'ChromaDB', 'Ollama', 'Python'],
     link: 'https://github.com/AaryanBasnet/TARA',
     website: '#',
-    image: '/projects/tara.png',
+    image: '/projects/tia-chat.jpg',
     cardImage: '/projects/tia-card.jpg',
     blockSays: "His thesis. He is proud of it.",
-    role: 'AI system design, RAG pipeline, backend prototyping',
+    role: 'AI system design, RAG pipeline, FastAPI backend, evaluation',
     year: '2026',
-    overview: 'Airport passengers often need fast answers in both English and Nepali, but that information is scattered across FAQs and live status sources. This virtual helpdesk for Tribhuvan International Airport brings it into one place, using RAG, LangGraph, and Ollama to answer questions and pull real-time flight status.',
+    overview: 'Passengers at Tribhuvan International Airport need quick answers in English and Nepali, but the information is spread across FAQs, customs rules and flight boards. This assistant brings it together. A LangGraph ReAct agent picks the right tool for each question: retrieval over a curated airport knowledge base (MiniLM embeddings in ChromaDB), flight status and route search, live Kathmandu weather from Open-Meteo, and a SIM-card check that validates the passport machine-readable zone (ICAO 9303). It runs on a local model through Ollama, behind a FastAPI backend and a React front end. The thesis also measured the system: a 50-question evaluation set across 18 categories tracked retrieval over successive runs (Hit@3 rose from 57.5% to 70%, MRR from 0.51 to 0.64), and an in-app dashboard shows the results. Flight data comes from a saved snapshot of a flight API, so it is a prototype rather than a live feed.',
     images: [
-      { src: '/projects/tara.png', caption: 'Chat interface with quick actions and live flight/weather widgets' },
+      { src: '/projects/tia-chat.jpg', caption: 'Chat answering from the airport documents and the flight data, with response time and confidence' },
+      { src: '/projects/tia-evaluation.jpg', caption: 'Evaluation dashboard: retrieval Hit@K, MRR, tool-selection accuracy and document-check results' },
+      { src: '/projects/tia-kyc.jpg', caption: 'SIM-card KYC flow: passport photo, selfie, ICAO 9303 check' },
+      { src: '/projects/tara.png', caption: 'Welcome screen with quick actions and a live weather widget' },
     ],
   },
   {
