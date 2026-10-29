@@ -36,6 +36,7 @@ export const projects = [
     year: '2025 – 2026',
     overview: 'Booking an event venue in Nepal is a conversation, not a cart: the customer asks for a date and a shift, the venue replies with a quotation priced per plate, and only a paid deposit confirms the booking. Venure covers that whole flow for customers, venue owners and admins. Owners join through an approval process with private documents, bookings cannot double up (a database unique index, proven by a 50-way race test), and a Bikram Sambat calendar sits beside the English dates. About 1,700 automated tests run across the stack, and a server-enforced read-only demo (customer, owner and admin) is one click from the login page.',
     images: [
+      { src: '/projects/venure-demo.gif', caption: 'A tour of the owner demo: dashboard, a customer request, the quotation builder, bookings, analytics and venues' },
       { src: '/projects/venure-home.jpg', caption: 'Landing page for venue discovery and search' },
       { src: '/projects/venure-venues.jpg', caption: 'Browse and filter venues by type, kind of space, guests and price' },
       { src: '/projects/venure-quotation.jpg', caption: 'The venue replies with a per-plate quotation for the guests the customer asked for' },
