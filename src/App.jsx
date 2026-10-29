@@ -524,7 +524,7 @@ export default function App() {
                     {selectedProject.video && <PromoVideo video={selectedProject.video} title={selectedProject.title} />}
                     {selectedProject.images.map((img, i) => (
                       <figure key={img.src} className="m-0">
-                        <div className="relative border border-rule bg-white">
+                        <div className="relative min-h-[11rem] border border-rule bg-cream">
                           <span className="absolute top-3 left-3 font-mono text-[0.62rem] tracking-[0.15em] bg-ink text-white px-2 py-1">0{i + 1}</span>
                           <img src={img.src} alt={`${selectedProject.title}: ${img.caption}`} loading="lazy" className="block w-full h-auto" />
                         </div>
